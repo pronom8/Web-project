@@ -14,6 +14,7 @@ Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana.
 Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
 Ylläpitäjä voi luoda salaisen alueen ja määrittää, keillä käyttäjillä on pääsy alueelle.
 Käyttäjä voi päivittää oman profiilikuvansa haluamaansa profiili kuvaan.
+Käyttäjä voi vaihtaa käyttäjänimeänsä ja omaa sähköpostiansa mikäli uusi nimi tai sähköposti ei ole varattu 
 
 
 # HUOM. Lisäsin sovellukseen joitakin muitakin toimintoja, joita ei lue aikaisemmassa suunitelmassani. 
