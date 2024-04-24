@@ -27,17 +27,17 @@ Clone this repository to your computer and go to its root folder
 
 Create .env file with the following content:
 
-DATABASE_URL=<local-database-address>  
-SECRET_KEY=<secret-key>  
+- DATABASE_URL=<local-database-address>  
+- SECRET_KEY=<secret-key>  
 
 Activate virtual environment and install requirements as follows:
-$ python3 -m venv venv     
-$ source venv/bin/activate 
+- $ python3 -m venv venv     
+- $ source venv/bin/activate 
 
 Download all the dependecies -> more info below and check the Help for dependencies file.
 
 Define the database schema:
-$ psql < schema.sql
+- $ psql < schema.sql
 
 
 go to run.py file
