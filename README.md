@@ -35,6 +35,7 @@ Activate virtual environment and install requirements as follows:
 - $ source venv/bin/activate 
 
 Download all the dependecies -> more info below and check the Help for dependencies file.
+pip install -r ./requirements.txt
 
 Define the database schema:
 - $ psql < schema.sql
