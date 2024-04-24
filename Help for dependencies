@@ -17,5 +17,5 @@ flask_login
 wtforms
 itsdangerous
 flask_login
-PIL
+PIL, another name -> Pillow
 flask_mail
