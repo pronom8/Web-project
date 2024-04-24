@@ -4,8 +4,8 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt, mail
 from flaskblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
-                              PostForm, RequestResetForm, ResetPasswordForm)
-from flaskblog.models import User, Post
+                              PostForm, RequestResetForm, ResetPasswordForm, TopicForm)
+from flaskblog.models import User, Post, Topic, TopicPosts
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 
@@ -24,6 +24,56 @@ def home():
 @app.route("/about")
 def about():
     return render_template('about.html', title='About')
+
+@app.route("/topics")
+def topics():
+    page= request.args.get('page', 1, type=int)
+    posts = Topic.query.order_by(Topic.date_posted.desc()).paginate(page=page, per_page=1)
+    return render_template('topics.html', posts=posts)
+
+@app.route("/topic_posts")
+def topic_posts():
+    page= request.args.get('page', 1, type=int)
+
+    topic_id = request.args.get('topic_id')
+
+    posts = TopicPosts.query.order_by(TopicPosts.date_posted.desc()).paginate(page=page, per_page=5)
+    return render_template('topic_posts.html', posts=posts, topic_id=topic_id)
+
+
+
+@app.route('/new_topic', methods=['GET', 'POST'])
+def new_topic():
+    form = TopicForm()
+    if current_user.username != 'admin' and current_user.username != 'admin123':
+        return redirect(url_for('home'))
+    if form.validate_on_submit():
+        topic = Topic(title=form.title.data, content=form.content.data, user_id=current_user.id)
+        db.session.add(topic)
+        db.session.commit()
+        flash('New topic has been created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('create_topic.html', title='Create a topic',
+                           form=form, legend='New Topic')
+    
+
+
+@app.route("/topic_post", methods=['GET', 'POST'])
+@login_required
+def topic_post():
+    form = PostForm()
+    topic_id = request.args.get('topic_id') 
+    if form.validate_on_submit():
+        
+        post = TopicPosts(title=form.title.data, content=form.content.data, topic_id = topic_id, user_id=current_user.id)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('create_topic_post.html', title='New Topic Post',
+                           form=form, legend='New Topic Post', topic_id=topic_id)
+
+
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -61,6 +111,7 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+    
 
 
 def save_picture(form_picture):
