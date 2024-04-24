@@ -1,0 +1,21 @@
+Here you can find some of the thing you might want to download, it may not have them all unfortunately, but atleast has some:
+atleast on windows VScode using:  pip install email_validator  
+intalls email_validator
+
+here are some dependecies to install before using: (tell me in an issue if there is something missing)
+
+os
+secrets
+flask
+email_validator
+flask_sqlalchemy
+flask_bcrypt
+flask_login
+flask_mail
+flask_wtf
+flask_login
+wtforms
+itsdangerous
+flask_login
+PIL
+flask_mail
