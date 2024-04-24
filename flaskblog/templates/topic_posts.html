@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+    {% if topic_id is none %}
+    <h2>koira</h2>
+    {% else %}
+    <h1>OPAAA {{topic_id}}</h1>
+
+    <h1 class="mb-3"> WELCOME TO {{topic_id}} !!!</h1>
+
+    <a class="nav-item nav-link" href="{{ url_for('topic_post', topic_id = topic_id) }}">New Topic Post</a>
+    
+    {% endif %}
+
+
+    
+{% endblock content %}
