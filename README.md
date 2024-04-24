@@ -20,15 +20,38 @@ Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueil
 # HUOM. Lisäsin sovellukseen joitakin muitakin toimintoja, joita ei lue aikaisemmassa suunitelmassani. 
 
 
-# TESTI OHJEET: 
+
+
+# Käynnistäminen
+Clone this repository to your computer and go to its root folder
+
+Create .env file with the following content:
+
+DATABASE_URL=<local-database-address>  
+SECRET_KEY=<secret-key>  
+
+Activate virtual environment and install requirements as follows:
+$ python3 -m venv venv     
+$ source venv/bin/activate 
+
+Download all the dependecies -> more info below and check the Help for dependencies file.
+
+Define the database schema:
+$ psql < schema.sql
+
+
+go to run.py file
+run the file
+
+# Downloading the dependencies: 
 
 Lataa kaikki tarvittavat dependecies jotka lukee jokaisessa import statementissa ( esim VSCode ainakin näyttää että ei tunnista import from flask_bcrypt import Bcrypt jos ei ole ladannut flask_bcrypt:iä ) 
 
 Kun olet ladannut kaikki tarvittavat niin käynnistä sovellus run run.py tiedostolla.
+
 Yleensä tässä kohtaa terminaalissa saattaisi lukea mitä latauksia sinulta puuttuu jos on niitä. Toinen mistä huomaa on jos painelet eri juttuja sivulla niin voi heittää error pagelle jossa lukee mitä puuttuu (tai ei tunnisteta )
 - Sovellusta voi testata oman tietokoneen luomalla serverillä. Paina ctrl + klickaa serverin osoitetta niin pääset sivulle.
-- Voit pysäyttää serverin klikkaamalla terminaalia ja painamalla ctrl+c 
-
+- Voit pysäyttää serverin klikkaamalla terminaalia ja painamalla ctrl+c
 
 # NYKYINEN TILANNE:
 
