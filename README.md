@@ -31,13 +31,17 @@ Yleensä tässä kohtaa terminaalissa saattaisi lukea mitä latauksia sinulta pu
 
 
 # NYKYINEN TILANNE:
-Keskeiset toiminnot kuten rekistöröityminen ja kirjautuminen toimii
-myöskin se että käyttäjä voi luoda postauksia, muokata omia postauksia ja poistaa oman postauksensa.
-Sovellus päivittää automaattisesti uusimmat päivitukset ensimmäiseksi. Klikkaamalla toisen päivitystä pääsee toisen profiiliin josta voi nähdä hänen päivityksensä uusimmasta vanhimpaan järjestyksessä sekä päivityksien määrän. 
-Käyttäjä näkee postauksien päivämäärät. 
-Käyttäjä voi päivittää oman profiilikuvansa haluamaansa profiili kuvaan.
-Sovelluksen ulkoasu on näiltä osin valmis. 
-Sovellus tällä hetkellä tukeutuu sql alchemyyn eikä olla integroitu vielä SQL komentoja kunnolla. 
+
+- Keskeiset toiminnot kuten rekistöröityminen ja kirjautuminen toimii
+- myöskin se että käyttäjä voi luoda postauksia, muokata omia postauksia ja poistaa oman postauksensa.
+- Sovellus päivittää automaattisesti uusimmat päivitukset ensimmäiseksi. Klikkaamalla toisen päivitystä pääsee toisen profiiliin josta voi nähdä hänen päivityksensä uusimmasta vanhimpaan järjestyksessä sekä päivityksien määrän. 
+- Käyttäjä näkee postauksien päivämäärät. 
+- Käyttäjä voi päivittää oman profiilikuvansa haluamaansa profiili kuvaan.
+- Sovelluksen ulkoasu on näiltä osin valmis. 
+- Sovellus tällä hetkellä tukeutuu sql alchemyyn eikä olla integroitu vielä SQL komentoja kunnolla.
+- Ylläpitäjä voi kirjautua sisään admin@gmail.com , jossa salasana: 123
+- Ylläpitäjä voi luoda keskustelu alueita
+- Keskustelu alueissa ei vielä näy siihen lisättyjä postauksia
 
 
  HUOM. Salasanan uusimis toiminto on vaiheessa ja saattaa tai ei saata toimia jos laitat oman __init__.py tiedostossa
