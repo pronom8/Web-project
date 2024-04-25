@@ -10,6 +10,11 @@
     <h1 class="mb-3"> WELCOME TO THIS TOPICS DISCUSSING AREA !!!</h1>
 
     <a class="nav-item nav-link" href="{{ url_for('topic_post', topic_id = topic_id) }}">New Topic Post</a>
+
+    {% if current_user.username == 'admin' or current_user.username == 'admin123' %}
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('your_topic', topic_id = topic_id) }}">Delete Discussing area</a>
+    
+    {% endif %}
     
     {% endif %}
 
