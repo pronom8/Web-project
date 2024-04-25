@@ -18,6 +18,8 @@ Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueil
 
 
 # HUOM. Lisäsin sovellukseen joitakin muitakin toimintoja, joita ei lue aikaisemmassa suunitelmassani. 
+ #2. HUOM. Jos huomaat että sinun täytyi ladata jotain riippuvuuksia mitä ei ollut dependencies.txt tiedostossa ilmoitathan siitä palautteessasi ja jaa ihmeessä oma tapasi miten sait sovelluksen toimimaan koneellasi (mikä käyttöjärjestelmä tietoon myös)
+
 
 
 
@@ -56,16 +58,20 @@ Yleensä tässä kohtaa terminaalissa saattaisi lukea mitä latauksia sinulta pu
 
 # NYKYINEN TILANNE:
 
-- Keskeiset toiminnot kuten rekistöröityminen ja kirjautuminen toimii
-- myöskin se että käyttäjä voi luoda postauksia, muokata omia postauksia ja poistaa oman postauksensa.
-- Sovellus päivittää automaattisesti uusimmat päivitukset ensimmäiseksi. Klikkaamalla toisen päivitystä pääsee toisen profiiliin josta voi nähdä hänen päivityksensä uusimmasta vanhimpaan järjestyksessä sekä päivityksien määrän. 
-- Käyttäjä näkee postauksien päivämäärät. 
+- Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
+- Käyttäjä näkee sovelluksen etusivulla listan alueista sekä jokaisen alueen ketjujen ja viestien määrän ja viimeksi lähetetyn viestin ajankohdan.
+- Käyttäjä voi luoda alueelle uuden ketjun antamalla ketjun otsikon ja aloitusviestin sisällön.
+- Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun.
+- Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. Käyttäjä voi myös poistaa ketjun tai viestin.
+- Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana.
+- Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
+- Ylläpitäjä ei vielä voi luoda salaista aluetta ja määrittää, keillä käyttäjillä on pääsy alueelle.
 - Käyttäjä voi päivittää oman profiilikuvansa haluamaansa profiili kuvaan.
-- Sovelluksen ulkoasu on näiltä osin valmis. 
+- Käyttäjä voi vaihtaa käyttäjänimeänsä ja omaa sähköpostiansa mikäli uusi nimi tai sähköposti ei ole varattu 
+
 - Sovellus tällä hetkellä tukeutuu sql alchemyyn eikä olla integroitu vielä SQL komentoja kunnolla.
 - Ylläpitäjä voi kirjautua sisään admin@gmail.com , jossa salasana: 123
-- Ylläpitäjä voi luoda keskustelu alueita
-- Keskustelu alueissa ei vielä näy siihen lisättyjä postauksia
+
 
 
  HUOM. Salasanan uusimis toiminto on vaiheessa ja saattaa tai ei saata toimia jos laitat oman __init__.py tiedostossa
