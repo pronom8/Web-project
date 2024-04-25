@@ -31,6 +31,14 @@ def topics():
     posts = Topic.query.order_by(Topic.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('topics.html', posts=posts)
 
+
+@app.route("/your_topic/<int:topic_id>")
+def your_topic(topic_id):
+    topic = Topic.query.get_or_404(topic_id)
+    return render_template('area.html', post = topic)
+
+
+
 @app.route("/topic_posts")
 def topic_posts():
     page= request.args.get('page', 1, type=int)
