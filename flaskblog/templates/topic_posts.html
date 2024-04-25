@@ -3,15 +3,37 @@
 
 
     {% if topic_id is none %}
-    <h2>koira</h2>
+        <h2>Looks like the topic_id did not get trough, please refresh the site</h2>
     {% else %}
-    <h1>OPAAA {{topic_id}}</h1>
+    <h1>Here is this topics ID: {{topic_id}}</h1>
 
-    <h1 class="mb-3"> WELCOME TO {{topic_id}} !!!</h1>
+    <h1 class="mb-3"> WELCOME TO {{topic_title}} !!!</h1>
 
     <a class="nav-item nav-link" href="{{ url_for('topic_post', topic_id = topic_id) }}">New Topic Post</a>
     
     {% endif %}
+
+    {% for post in posts.items %}
+        {% if post.topic_id == topic_id %}
+            <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename = 'profile_pics/'+ post.author.image_file) }}">
+            <div class="media-body">
+                <div class="article-metadata">
+                <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+                <small class="text-muted">{{ post.date_posted }}</small>
+                </div>
+                {% if post.id is not none %}
+                <h2><a class="article-title" href=" {{ url_for('your_topic_post', post_id=post.id) }}" >{{ post.title }}, {{post.id}}</a></h2>
+                <p class="article-content">{{ post.content }}</p>
+                {% endif %}
+            </div>
+            </article>
+        {% endif %}
+       
+        
+    {% endfor %}
+
+
 
 
     
