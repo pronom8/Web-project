@@ -225,6 +225,21 @@ def update_post(post_id):
 
 
 
+@app.route("/post/<int:post_id>/delete_area", methods=['POST'])
+@login_required
+def delete_area(post_id):
+    topic = Topic.query.get_or_404(post_id)
+    
+    if topic.author != current_user:
+        abort(403)
+
+    TopicPosts.query.filter_by(topic_id=topic.id).delete()
+    db.session.delete(topic)
+    db.session.commit()
+    flash('Your topic has been deleted!', 'success')
+    return redirect(url_for('topics'))
+  
+
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
 @login_required
 def delete_topic_post(post_id):
