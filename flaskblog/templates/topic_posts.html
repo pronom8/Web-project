@@ -28,7 +28,7 @@
                 <small class="text-muted">{{ post.date_posted }}</small>
                 </div>
                 {% if post.id is not none %}
-                <h2><a class="article-title" href=" {{ url_for('your_topic_post', post_id=post.id) }}" >{{ post.title }}, {{post.id}}</a></h2>
+                <h2><a class="article-title" href=" {{ url_for('your_topic_post', post_id=post.id) }}" >{{ post.title }}</a></h2>
                 <p class="article-content">{{ post.content }}</p>
                 {% endif %}
             </div>
