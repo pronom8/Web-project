@@ -28,7 +28,7 @@ def about():
 @app.route("/topics")
 def topics():
     page= request.args.get('page', 1, type=int)
-    posts = Topic.query.order_by(Topic.date_posted.desc()).paginate(page=page, per_page=1)
+    posts = Topic.query.order_by(Topic.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('topics.html', posts=posts)
 
 @app.route("/topic_posts")
