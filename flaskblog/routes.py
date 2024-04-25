@@ -60,7 +60,7 @@ def new_topic():
         db.session.add(topic)
         db.session.commit()
         flash('New topic has been created!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('topics'))
     return render_template('create_topic.html', title='Create a topic',
                            form=form, legend='New Topic')
     
@@ -77,7 +77,7 @@ def topic_post():
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('topics'))
     return render_template('create_topic_post.html', title='New Topic Post',
                            form=form, legend='New Topic Post', topic_id=topic_id)
 
