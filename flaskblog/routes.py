@@ -183,6 +183,28 @@ def post(post_id):
 
 
 
+@app.route("/post/<int:post_id>/update_topic", methods=['GET', 'POST'])
+@login_required
+def update_topic(post_id):
+    post = Topic.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your Topic has been updated!', 'success')
+        return redirect(url_for('topics'))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_post.html', title='Update Post',
+                           form=form, legend='Update Post')
+
+
+
+
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_topic_post(post_id):
