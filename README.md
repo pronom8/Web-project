@@ -46,6 +46,9 @@ Define the database schema:
 go to run.py file
 run the file
 
+if you are not able to run the file try typing into terminal: 
+python run.py
+
 # Downloading the dependencies: 
 
 Lataa kaikki tarvittavat dependecies jotka lukee jokaisessa import statementissa ( esim VSCode ainakin näyttää että ei tunnista import from flask_bcrypt import Bcrypt jos ei ole ladannut flask_bcrypt:iä ) 
