@@ -74,7 +74,10 @@ def topic_post():
                            form=form, legend='New Topic Post', topic_id=topic_id)
 
 
-
+@app.route("/your_topic_post/<int:post_id>")
+def your_topic_post(post_id):
+    post = TopicPosts.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
