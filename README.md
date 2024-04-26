@@ -18,7 +18,14 @@ Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueil
 
 
 # HUOM. Lisäsin sovellukseen joitakin muitakin toimintoja, joita ei lue aikaisemmassa suunitelmassani. 
- #2. HUOM. Jos huomaat että sinun täytyi ladata jotain riippuvuuksia mitä ei ollut dependencies.txt tiedostossa ilmoitathan siitä palautteessasi ja jaa ihmeessä oma tapasi miten sait sovelluksen toimimaan koneellasi (mikä käyttöjärjestelmä tietoon myös)
+
+# 2. HUOM. Jos huomaat että sinun täytyi ladata jotain riippuvuuksia mitä ei ollut dependencies.txt tiedostossa ilmoitathan siitä palautteessasi ja jaa ihmeessä oma tapasi miten sait sovelluksen toimimaan koneellasi (mikä käyttöjärjestelmä tietoon myös)
+
+ # 3. huom. Muista rekistöröidä admin sisään jos haluat luoda topic pageen aiheita. Muuten sivu näkyy tyhjänä:
+ - nimi: admin
+ - sähköposti: admin@gmail.com
+ - salasana: kunhan muistat sen
+ 
 
 
 
