@@ -42,12 +42,16 @@ pip install -r ./requirements.txt
 Define the database schema:
 - $ psql < schema.sql
 
+flask run
 
-go to run.py file
+___________________________________
+if flask run does not work:
+___________________________________
+go to app.py file
 run the file
 
 if you are not able to run the file try typing into terminal: 
-python run.py
+python app.py or try typing: flask run 
 
 # Downloading the dependencies: 
 
