@@ -20,6 +20,8 @@ class User(db.Model, UserMixin):
 
     topics = db.relationship('Topic', backref= 'author', lazy = True)
 
+    topic_posts = db.relationship('TopicPosts', backref= 'author', lazy = True)
+
     post_comments = db.relationship('Comments', backref= 'author', lazy = True)
     
 
