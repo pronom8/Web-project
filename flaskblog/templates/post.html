@@ -19,6 +19,10 @@
           </div>
         </article>
 
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('comments', post_id = post.id) }}">Comments</a>
+
+
+
         <!-- Modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
