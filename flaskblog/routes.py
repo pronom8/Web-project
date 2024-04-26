@@ -182,6 +182,16 @@ def post(post_id):
 
 
 
+@app.route("/comments")
+def comments():
+    page= request.args.get('page', 1, type=int)
+
+    post_id = int(request.args.get('post_id'))
+
+    posts = Comments.query.order_by(Comments.date_posted.desc()).paginate(page=page, per_page=5)
+    return render_template('comments.html', posts=posts, post_id=post_id)
+  
+
 
 @app.route("/post/<int:post_id>/update_topic", methods=['GET', 'POST'])
 @login_required
