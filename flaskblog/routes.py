@@ -38,12 +38,11 @@ def your_topic(topic_id):
     return render_template('area.html', post = topic)
 
 
-
 @app.route("/topic_posts")
 def topic_posts():
     page= request.args.get('page', 1, type=int)
 
-    topic_id = request.args.get('topic_id')
+    topic_id = int(request.args.get('topic_id'))
 
     posts = TopicPosts.query.order_by(TopicPosts.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('topic_posts.html', posts=posts, topic_id=topic_id)
@@ -85,7 +84,9 @@ def topic_post():
 @app.route("/your_topic_post/<int:post_id>")
 def your_topic_post(post_id):
     post = TopicPosts.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post)
+    return render_template('topic_post.html', title=post.title, post=post)
+
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -182,6 +183,7 @@ def post(post_id):
 
 
 
+
 @app.route("/comments")
 def comments():
     page= request.args.get('page', 1, type=int)
@@ -207,6 +209,7 @@ def new_comment():
         return redirect(url_for('home'))
     return render_template('new_comment.html', title='New Topic Post',
                            form=form, legend='New Topic Post', post_id=post_id)
+
 
 
 @app.route("/post/<int:post_id>/update_topic", methods=['GET', 'POST'])
@@ -251,8 +254,7 @@ def update_topic_post(post_id):
                            form=form, legend='Update Post')
 
 
-
-@app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
+@app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
@@ -272,6 +274,25 @@ def update_post(post_id):
                            form=form, legend='Update Post')
 
 
+@app.route("/post/<int:post_id>/updatecomment", methods=['GET', 'POST'])
+@login_required
+def update_comment(post_id):
+    post = Comments.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('topics'))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_post.html', title='Update Post',
+                           form=form, legend='Update Post')
+
 
 @app.route("/post/<int:post_id>/delete_area", methods=['POST'])
 @login_required
@@ -281,12 +302,13 @@ def delete_area(post_id):
     if topic.author != current_user:
         abort(403)
 
+
     TopicPosts.query.filter_by(topic_id=topic.id).delete()
     db.session.delete(topic)
     db.session.commit()
     flash('Your topic has been deleted!', 'success')
     return redirect(url_for('topics'))
-  
+
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
 @login_required
@@ -301,13 +323,13 @@ def delete_topic_post(post_id):
 
 
 
-
-@app.route("/post/<int:post_id>/delete", methods=['POST'])
+@app.route("/post/<int:post_id>/delete_post", methods=['POST'])
 @login_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
+    Comments.query.filter_by(post_id=post_id).delete()
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
