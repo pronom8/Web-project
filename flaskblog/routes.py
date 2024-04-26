@@ -190,7 +190,23 @@ def comments():
 
     posts = Comments.query.order_by(Comments.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('comments.html', posts=posts, post_id=post_id)
-  
+
+
+
+@app.route("/new_comment", methods=['GET', 'POST'])
+@login_required
+def new_comment():
+    form = PostForm()
+    post_id = request.args.get('post_id') 
+    if form.validate_on_submit():
+        
+        post = Comments(title=form.title.data, content=form.content.data, post_id = post_id, user_id=current_user.id)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('new_comment.html', title='New Topic Post',
+                           form=form, legend='New Topic Post', post_id=post_id)
 
 
 @app.route("/post/<int:post_id>/update_topic", methods=['GET', 'POST'])
