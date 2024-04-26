@@ -19,6 +19,8 @@ class User(db.Model, UserMixin):
     # topic_posts = db.relationship('TopicPosts', backref='author', lazy=True)
 
     topics = db.relationship('Topic', backref= 'author', lazy = True)
+
+    post_comments = db.relationship('Comments', backref= 'author', lazy = True)
     
 
  #   def get_reset_token(self, expires_sec=1800):
