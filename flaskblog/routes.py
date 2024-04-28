@@ -343,6 +343,17 @@ def delete_post(post_id):
     return redirect(url_for('home'))
 
 
+@app.route("/post/<int:post_id>/delete_comment", methods=['POST'])
+@login_required
+def delete_comment(post_id):
+    post = Comments.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your comment has been deleted!', 'success')
+    return redirect(url_for('home'))
+
 
 
 @app.route("/user/<string:username>")
