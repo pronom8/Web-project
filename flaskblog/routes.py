@@ -195,6 +195,13 @@ def comments():
 
 
 
+@app.route("/edit_comment/<int:post_id>")
+def edit_comment(post_id):
+    post = Comments.query.get_or_404(post_id)
+    return render_template('edit_comment.html', title=post.title, post=post)
+
+
+
 @app.route("/new_comment", methods=['GET', 'POST'])
 @login_required
 def new_comment():
