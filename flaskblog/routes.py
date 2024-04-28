@@ -292,7 +292,7 @@ def update_comment(post_id):
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
-        flash('Your post has been updated!', 'success')
+        flash('Your comment has been updated!', 'success')
         return redirect(url_for('topics'))
     elif request.method == 'GET':
         form.title.data = post.title
