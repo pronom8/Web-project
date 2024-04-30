@@ -31,7 +31,17 @@ CREATE TABLE topic_posts (
     user_id INTEGER REFERENCES "user" (id) NOT NULL
 );
 
+
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    date_posted TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    content TEXT NOT NULL,
+    post_id INTEGER REFERENCES post (id) NOT NULL,
+    user_id INTEGER REFERENCES "user" (id) NOT NULL
+);
+
 CREATE TABLE legend (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL
-    );
+);
