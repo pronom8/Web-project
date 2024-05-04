@@ -286,6 +286,57 @@ def private_area():
     return render_template('private_area.html', areas=areas, group_members= group_members)
 
 
+
+@app.route("/add_user_to_private_area", methods=['GET','POST'])
+def add_user_to_private_area():
+    if request.args.get('area_id') is None:
+        return redirect(url_for('private_area'))
+
+    area_id = int(request.args.get('area_id'))
+
+    # Check if the current user is authorized to perform this action
+    if current_user.username not in ['admin', 'admin123']:
+        flash('You are not authorized to perform this action!', 'danger')
+        return redirect(url_for('private_area'))
+
+    # Get the username from the form submission
+    username = request.form.get('username')
+
+    # Query the user table to find the corresponding user ID
+    user_query = text("""
+        SELECT id FROM "user" WHERE username = :username
+    """)
+    user_result = db.session.execute(user_query, {'username': username}).fetchone()
+
+    if not user_result:
+        flash('User not found!', 'danger')
+        return redirect(url_for('private_area'))
+
+    user_id = user_result.id
+
+    # Get the private area ID from the form or from the session, depending on how it's implemented
+    check_query = text("""
+    SELECT id
+    FROM private_area_user
+    WHERE private_area_id = :private_area_id AND user_id = :user_id
+    """)
+    result = db.session.execute(check_query, {'private_area_id': area_id, 'user_id': user_id}).fetchone()
+
+    if result is not None:
+        flash('User is already in the area!', 'error')
+        return redirect(url_for('private_area'))
+
+    # Insert the new record into the private_area_user table
+    insert_query = text("""
+        INSERT INTO private_area_user (private_area_id, user_id)
+        VALUES (:private_area_id, :user_id)
+    """)
+    db.session.execute(insert_query, {'private_area_id': area_id, 'user_id': user_id})
+    db.session.commit()
+
+    flash('User added to private area successfully!', 'success')
+    return redirect(url_for('private_area'))
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
