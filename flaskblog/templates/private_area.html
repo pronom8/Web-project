@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Private Areas</h1>
+    {% if current_user.username == 'admin' or current_user.username == 'admin123' %}
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('new_private_area') }}">Create a new Private Topic-Area</a>
+    
+    {% endif %}
+
+   
+
+    
+
+   
+    <form action="{{ url_for('search_private_posts') }}" method="POST" class="mt-1 mb-1">
+        <div class="form-group">
+            <input type="text" name="post_name" class="form-control" placeholder="Search for post" required>
+        </div>
+        <button type="submit" class="btn btn-secondary btn-sm">Search</button>
+    </form>
+    {% if areas %}
+            <p>Total areas: {{ areas|length }}</p>
+    {% endif %}
+
+     
+
+    
+
+    {% set filtered_areas = [] %}
+    {% set seen_ids = [] %}
+
+    {% for area in areas %}
+        {% for member_tuple in group_members %}
+            {% if current_user.id == member_tuple[2] and area.id == member_tuple[1] or current_user.username == 'admin' %}
+                {% if area.id not in seen_ids %}
+                    {% set _ = filtered_areas.append(area) %}
+                    {% set _ = seen_ids.append(area.id) %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    
+
+    {% if current_user.username == 'admin' or current_user.username == 'admin123' %}
+        {% for area in areas %}
+        
+                <article class="media content-section">
+                
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            <small class="text-muted">{{ area.date_posted }}</small>
+                        </div>
+                        {% if area.id is not none %}
+                        <h2><a class="article-title" href=" {{ url_for('private_area_posts', area_id = area.id) }} ">{{ area.title }}</a></h2>
+                        <p class="article-content">{{ area.content }}</p>
+                        {% endif %}
+                    </div>
+                </article>
+         
+        {% endfor %}
+    {% else %}
+        {% for area in areas %}
+            {% for member_tuple in group_members %}
+                {% if current_user.id == member_tuple[2] and area.id == member_tuple[1] %}
+                    <article class="media content-section">
+                        
+                        <div class="media-body">
+                            <div class="article-metadata">
+                                <small class="text-muted">{{ area.date_posted }}</small>
+                            </div>
+                            {% if area.id is not none %}
+                            <h2><a class="article-title" href=" {{ url_for('private_area_posts', area_id = area.id) }} ">{{ area.title }}</a></h2>
+                            <p class="article-content">{{ area.content }}</p>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+                
+    {% endif %}
+
+
+
+
+
+{% with areas=areas, area_id=area_id %}
+{% endwith %}
+
+  
+
+
+
+{% endblock content %}

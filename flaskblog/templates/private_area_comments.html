@@ -1,0 +1,86 @@
+
+
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+    
+
+    <h1 class="mb-3"> WELCOME TO THIS PRIVATE POST'S COMMENT SECTION !!!</h1>
+
+    <div class="article-metadata">
+      
+        {% if area_details.user_id == current_user.id %}
+            
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_private_post', comment_id = area_details.id) }}">Update Private Post</a>
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete Post</button>
+            
+        {% endif %}
+
+    </div>
+
+    
+
+    <article class="media content-section">
+        
+        <div class="media-body">
+
+            <h2 class="article-title"> {{ area_details.title, area_id }}</h2>
+            <p class="article-content">{{ area_details.content, area_details.id }}</p>
+        
+        </div>
+    </article>
+    <h1>_______________________________________________</h1>
+
+
+
+    <a class="nav-item nav-link" href="{{ url_for('add_private_comment', post_id = area_details.id, area_id = area_id) }}">Add Comment</a>
+
+   
+   
+
+    {% for comment in areas %}
+        {% if comment.private_area_post_id == area_details.id %}
+
+        <article class="media content-section">
+          
+            <div class="media-body">
+                <div class="article-metadata">
+                    <small class="text-muted">{{ comment.date_posted }}</small>
+                </div>
+               
+                <h2><a class="article-title" href="{{ url_for('private_post_comment', area_post_comment_id = comment.id) }}">{{ comment.title, comment.id }}</a></h2>
+                <p class="article-content">{{ comment.content }}</p>
+              
+            </div>
+        </article>
+        {% endif %}
+        
+    {% endfor %}
+
+    
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            are you sure you want to delete your comment
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <form action="{{ url_for('delete_private_post', post_id = area_details.id) }}" method="POST">
+                <input class="btn btn-danger" type="submit" value="Delete">
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock content %}

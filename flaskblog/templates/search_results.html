@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Here are all the matching posts:</h1>
+
+    
+
+
+    {% for area in matching_posts %}
+        
+
+        <article class="media content-section">
+          
+            <div class="media-body">
+                <div class="article-metadata">
+                    <small class="text-muted">{{ area.date_posted }}</small>
+                </div>
+                {% if area.id is not none %}
+                  <h2><a class="article-title" href="{{ url_for('private_area_comments', area_id = area.private_area_id, area_post_id = area.id) }}">{{ area.title }}</a></h2>
+                  <p class="article-content">{{ area.content }}</p>
+                {% endif %}
+            </div>
+        </article>
+       
+        
+    {% endfor %}
+
+
+
+
+{% endblock content %}

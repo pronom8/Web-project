@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Current Private Area's Posts, ID: {{area_id}}</h1>
+
+    
+
+
+
+
+    {% if current_user.username == 'admin' or current_user.username == 'admin123' %}
+      
+        <form action="{{ url_for('add_user_to_private_area', area_id = area_id) }}" method="POST" class="mt-1 mb-1">
+            <div class="form-group">
+                <input type="text" name="username" class="form-control" placeholder="Username" required>
+            </div>
+            <button type="submit" class="btn btn-secondary btn-sm">Add a new user to this private area: {{area_id}}</button>
+        </form>
+    
+    {% endif %}
+
+
+    
+
+    <a class="nav-item nav-link" href="{{ url_for('new_private_area_post', area_id = area_id) }}">New Private Topic Post</a>
+  
+
+    
+    {% for post in areas.items %}
+        <h1>Opaaaa</h1>
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename = 'profile_pics/'+ post.author.image_file) }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+              <small class="text-muted">{{ post.date_posted }}</small>
+            </div>
+            {% if post.id is not none %}
+            <h2><a class="article-title" href=" {{ url_for('topic_posts', topic_id=post.id, topic_title=post.title) }} ">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+            {% endif %}
+          </div>
+        </article>
+    {% endfor %}
+
+
+    {% for area in areas %}
+        {% if area.private_area_id == area_id %}
+
+        <article class="media content-section">
+          
+            <div class="media-body">
+                <div class="article-metadata">
+                    <small class="text-muted">{{ area.date_posted }}</small>
+                </div>
+                {% if area.id is not none %}
+                  <h2><a class="article-title" href="{{ url_for('private_area_comments', area_id = area_id, area_post_id = area.id) }}">{{ area.title }}</a></h2>
+                  <p class="article-content">{{ area.content }}</p>
+                {% endif %}
+            </div>
+        </article>
+        {% endif %}
+        
+    {% endfor %}
+
+    {% if current_user.username == 'admin' or current_user.username == 'admin123' %}
+      <button type="button" class="btn btn-secondary btn-sm mt-1 mb-1" data-toggle="modal" data-target="#deleteModal">Delete Private Area?</button>
+    {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+          <div class="modal-body">
+          are you sure you want to delete your comment
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('delete_private_area', area_id = area_id) }}" method="POST">
+              <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+          </div>
+      </div>
+      </div>
+  </div>
+
+
+
+{% with areas=areas, area_id=area_id, area_post_id = area_post_id %}
+{% endwith %}
+
+
+
+{% endblock content %}
