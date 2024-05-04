@@ -15,12 +15,80 @@ from collections import defaultdict
 
 
 
+
 @app.route("/")
 @app.route("/home")
 def home():
-    page= request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('home.html', posts=posts)
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    
+    # SQL query to fetch private areas ordered by date
+    sql_query = text("""
+        SELECT t.id, t.title, t.date_posted, t.content, t.user_id, u.image_file, u.username
+        FROM topic t
+        JOIN "user" u ON t.user_id = u.id
+        ORDER BY t.date_posted DESC
+    """)
+
+    
+    # Execute the SQL query with pagination
+    posts = db.session.execute(sql_query, {'per_page': per_page, 'offset': (page-1)*per_page}).fetchall()
+    total_posts_count = 0
+    total_comments = 0
+
+    topic_post_counts = {}
+    topic_comment_counts = {}
+
+    # Loop through topics to count total comments for each post
+    for post in posts:
+        topic_id = post.id
+
+        # SQL query to count total comments for the topic
+        sql_query_comments = text("""
+            SELECT COUNT(*) AS num_posts
+            FROM topic_posts tp
+            WHERE tp.topic_id = :topic_id
+        """)
+
+        sql_real_comments = text("""
+            SELECT *
+            FROM topic_posts tp
+            WHERE tp.topic_id = :topic_id """)
+
+
+        post_posts_result = db.session.execute(sql_query_comments, {'topic_id': topic_id}).fetchone()
+        num_posts = post_posts_result.num_posts if post_posts_result else 0
+        total_posts_count += num_posts
+
+        topic_post_counts[topic_id] = num_posts
+
+        comments = db.session.execute(sql_real_comments, {'topic_id': topic_id}).fetchall()
+        for comment in comments:
+            topic_post_id = comment.id
+
+            sql_querya_comments = text("""
+            SELECT COUNT(*) AS num_comments
+            FROM topic_post_comments tpc
+            WHERE tpc.topic_post_id = :topic_post_id
+             """)
+            
+            comment_result = db.session.execute(sql_querya_comments, {'topic_post_id': topic_post_id}).fetchone()
+            num_comments = comment_result.num_comments if comment_result else 0
+            total_comments += num_comments
+
+            if topic_id in topic_comment_counts:
+                topic_comment_counts[topic_id] += num_comments
+            else:
+                topic_comment_counts[topic_id] = num_comments
+            
+    
+    
+  
+    return render_template('home.html', posts=posts, total_posts_count=total_posts_count,
+                            total_comments=total_comments, topic_post_counts=topic_post_counts, topic_comment_counts=topic_comment_counts)
+    
+  
+    
 
 
 @app.route("/about")
