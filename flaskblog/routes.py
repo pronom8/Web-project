@@ -493,6 +493,80 @@ def new_private_area_post():
 
 
 
+
+@app.route("/post/<int:comment_id>/update_private_post", methods=['GET', 'POST'])
+@login_required
+def update_private_post(comment_id):
+    # Fetch the post from the database
+    post_query = text("""
+        SELECT id, title, content, private_area_id, user_id
+        FROM private_area_posts
+        WHERE id = :comment_id
+    """)
+    comment = db.session.execute(post_query, {'comment_id': comment_id}).fetchone()
+
+    # Check if the post exists and if the current user is the author
+    if not comment:
+        abort(404)  # Post not found
+    if comment.user_id != current_user.id:
+        abort(403)  # Forbidden, user is not the author
+
+    form = PostForm()
+    if form.validate_on_submit():
+        # Update the post with data from the form
+        update_query = text("""
+            UPDATE private_area_posts
+            SET title = :title, content = :content
+            WHERE id = :comment_id
+        """)
+        db.session.execute(update_query, {'title': form.title.data, 'content': form.content.data, 'comment_id': comment_id})
+        db.session.commit()
+        flash('Your comment has been updated!', 'success')
+        return redirect(url_for('private_area'))
+    elif request.method == 'GET':
+        # Pre-populate the form with post data
+        form.title.data = comment.title
+        form.content.data = comment.content
+
+    return render_template('new_comment.html', title='Update Comment', form=form, legend='Update Post')
+
+
+
+
+@app.route("/post/<int:post_id>/delete_private_post", methods=['POST'])
+@login_required
+def delete_private_post(post_id):
+    post_query = text("""
+        SELECT id, user_id
+        FROM private_area_posts
+        WHERE id = :post_id
+    """)
+    post = db.session.execute(post_query, {'post_id': post_id}).fetchone()
+
+    if not post:
+        abort(404)  
+    if post.user_id != current_user.id:
+        abort(403)  
+
+    delete_post_query = text("""
+        DELETE FROM private_area_posts
+        WHERE id = :post_id
+    """)
+
+    db.session.execute(delete_post_query, {'post_id': post_id})
+
+    delete_comments_query = text("""
+        DELETE FROM private_area_post_comments
+        WHERE private_area_post_id = :post_id
+    """)
+
+    db.session.execute(delete_comments_query, {'post_id': post_id})
+
+    db.session.commit()
+
+    flash('Your private post and its comments has been deleted!', 'success')
+    return redirect(url_for('private_area'))
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
