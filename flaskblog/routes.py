@@ -364,6 +364,60 @@ def new_private_area():
                            form=form, legend='New Topic')
 
 
+
+
+
+@app.route("/post/<int:area_id>/delete_private_area", methods=['POST'])
+@login_required
+def delete_private_area(area_id):
+    # Fetch all posts belonging to the private area
+    posts_query = text("""
+        SELECT id
+        FROM private_area_posts
+        WHERE private_area_id = :area_id
+    """)
+    posts = db.session.execute(posts_query, {'area_id': area_id}).fetchall()
+
+    # Delete each post and its associated comments
+    for post in posts:
+        post_id = post.id 
+        
+        # Delete the post
+        delete_post_query = text("""
+            DELETE FROM private_area_posts
+            WHERE id = :post_id
+        """)
+        db.session.execute(delete_post_query, {'post_id': post_id})
+
+        # Delete associated comments
+        delete_comments_query = text("""
+            DELETE FROM private_area_post_comments
+            WHERE private_area_post_id = :post_id
+        """)
+        db.session.execute(delete_comments_query, {'post_id': post_id})
+
+    delete_user_area_query = text("""
+        DELETE FROM private_area_user
+        WHERE private_area_id = :area_id
+    """)
+    db.session.execute(delete_user_area_query, {'area_id': area_id})
+
+    area_query = text("""
+            DELETE FROM private_area
+            WHERE id = :area_id
+        """)
+    db.session.execute(area_query, {'area_id': area_id})
+
+    
+
+    db.session.commit()
+
+
+    flash('Your private area, its posts, and their comments have been deleted!', 'success')
+    return redirect(url_for('private_area'))
+
+
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
