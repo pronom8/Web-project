@@ -175,18 +175,31 @@ def new_topic():
     
 
 
-@app.route("/topic_post", methods=['GET', 'POST'])
+
+@app.route("/new_topic_post", methods=['GET', 'POST'])
 @login_required
-def topic_post():
+def new_topic_post():
     form = PostForm()
     topic_id = request.args.get('topic_id') 
     if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        user_id = current_user.id
+        date_posted = datetime.utcnow()  # Get the current datetime
         
-        post = TopicPosts(title=form.title.data, content=form.content.data, topic_id = topic_id, user_id=current_user.id)
-        db.session.add(post)
+        # SQL query to insert a new topic post into the database
+        sql_query = text("""
+            INSERT INTO topic_posts (title, content, topic_id, user_id, date_posted)
+            VALUES (:title, :content, :topic_id, :user_id, :date_posted)
+        """)
+        
+        # Execute the SQL query with the provided data
+        db.session.execute(sql_query, {'title': title, 'content': content, 'topic_id': topic_id, 'user_id': user_id, 'date_posted': date_posted})
         db.session.commit()
-        flash('Your post has been created!', 'success')
+        
+        flash('Your topic-post has been created!', 'success')
         return redirect(url_for('topics'))
+    
     return render_template('create_topic_post.html', title='New Topic Post',
                            form=form, legend='New Topic Post', topic_id=topic_id)
 
