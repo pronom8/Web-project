@@ -261,6 +261,31 @@ def update_topic_post(post_id):
                            form=form, legend='Update Post')
 
 
+@app.route("/private_area")
+def private_area():
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    
+    # SQL query to fetch private areas ordered by date
+    sql_query = text("""
+        SELECT id, title, date_posted, content, user_id
+        FROM private_area
+        ORDER BY date_posted DESC
+    """)
+
+    access_query = text("""
+        SELECT *
+        FROM private_area_user
+     
+    """)
+    group_members = db.session.execute(access_query).fetchall()
+    # Execute the SQL query with pagination
+    areas = db.session.execute(sql_query, {'per_page': per_page, 'offset': (page-1)*per_page}).fetchall()
+    
+  
+    return render_template('private_area.html', areas=areas, group_members= group_members)
+
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
