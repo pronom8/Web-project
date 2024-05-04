@@ -234,6 +234,24 @@ def topic_post_comments(post_id):
 
 
 
+
+@app.route("/topic_post_comment")
+def topic_post_comment():
+
+    comment_id = int(request.args.get('comment_id'))
+
+    sql_query = text("""
+        SELECT id, title, date_posted, content, user_id, topic_post_id, topic_id
+        FROM topic_post_comments
+        WHERE id = :comment_id
+    """)
+
+    comment_info = db.session.execute(sql_query, {'comment_id': comment_id}).fetchone()
+
+    return render_template('topic_comment.html', comment_info=comment_info)
+
+
+
 @app.route("/your_topic_post/<int:post_id>")
 def your_topic_post(post_id):
     post = TopicPosts.query.get_or_404(post_id)
