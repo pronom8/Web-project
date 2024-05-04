@@ -567,6 +567,41 @@ def delete_private_post(post_id):
     flash('Your private post and its comments has been deleted!', 'success')
     return redirect(url_for('private_area'))
 
+
+
+@app.route("/private_area_comments")
+def private_area_comments():
+    area_id = int(request.args.get('area_id'))
+    area_post_id = int(request.args.get('area_post_id'))
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    
+
+    area_query = text("""
+        SELECT id, title, date_posted, content, user_id
+        FROM private_area_posts
+        WHERE id = :area_post_id
+    """)
+    area_details = db.session.execute(area_query, {'area_post_id': area_post_id}).fetchone()
+
+    # SQL query to fetch private areas ordered by date
+    sql_query = text("""
+        SELECT id, title, date_posted, content, user_id, private_area_id, private_area_post_id
+        FROM private_area_post_comments
+        ORDER BY date_posted DESC
+        
+    """)
+    
+
+  
+    # Execute the SQL query with pagination
+    areas = db.session.execute(sql_query, {'per_page': per_page, 'offset': (page-1)*per_page}).fetchall()
+    print(areas)
+    return render_template('private_area_comments.html', areas=areas, area_id=area_id, area_post_id = area_post_id, area_details = area_details)
+
+
+
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
