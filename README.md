@@ -6,7 +6,7 @@ Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueil
 - Sovelluksen ominaisuuksia:
 
 - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
-- Käyttäjä näkee sovelluksen etusivulla listan alueista sekä jokaisen alueen ketjujen ja viestien määrän ja viimeksi lähetetyn viestin ajankohdan.
+- Käyttäjä näkee sovelluksen etusivulla listan alueista sekä jokaisen alueen ketjujen ja viestien määrän.
 - Käyttäjä voi luoda alueelle uuden ketjun antamalla ketjun otsikon ja aloitusviestin sisällön.
 - Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun.
 - Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. Käyttäjä voi myös poistaa ketjun tai viestin.
@@ -25,7 +25,10 @@ Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueil
  - nimi: admin
  - sähköposti: admin@gmail.com
  - salasana: kunhan muistat sen
- 
+# JOS admin on jo luotu tässä tunnukset:
+- nimi: admin
+- sähköposti: admin@gmail.com
+- salasana: 123
 
 
 
@@ -60,6 +63,14 @@ run the file
 if you are not able to run the file try typing into terminal: 
 python app.py or try typing: flask run 
 
+_____________________________________
+if psycocg2 missing, try installing it again and restart VScode
+if dotenv not working, try installing pip install python-dotenv
+and after that try to run app.py
+if that does not work restart code-editor
+_____________________________________
+
+
 # Downloading the dependencies: 
 
 Lataa kaikki tarvittavat dependecies jotka lukee jokaisessa import statementissa ( esim VSCode ainakin näyttää että ei tunnista import from flask_bcrypt import Bcrypt jos ei ole ladannut flask_bcrypt:iä ) 
@@ -72,19 +83,7 @@ Yleensä tässä kohtaa terminaalissa saattaisi lukea mitä latauksia sinulta pu
 
 # NYKYINEN TILANNE:
 
-- Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
-- Käyttäjä näkee sovelluksen etusivulla listan alueista sekä jokaisen alueen ketjujen ja viestien määrän ja viimeksi lähetetyn viestin ajankohdan.
-- Käyttäjä voi luoda alueelle uuden ketjun antamalla ketjun otsikon ja aloitusviestin sisällön.
-- Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun.
-- Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. Käyttäjä voi myös poistaa ketjun tai viestin.
-- Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana.
-- Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
-- Ylläpitäjä ei vielä voi luoda salaista aluetta ja määrittää, keillä käyttäjillä on pääsy alueelle.
-- Käyttäjä voi päivittää oman profiilikuvansa haluamaansa profiili kuvaan.
-- Käyttäjä voi vaihtaa käyttäjänimeänsä ja omaa sähköpostiansa mikäli uusi nimi tai sähköposti ei ole varattu 
-
-- Sovellus tällä hetkellä tukeutuu sql alchemyyn eikä olla integroitu vielä SQL komentoja kunnolla.
-- Ylläpitäjä voi kirjautua sisään admin@gmail.com , jossa salasana: 123
+- Sovelluksen pitäisi toimia odotetusti niinkuin sovelluksen ominaisuuksia osiossa sanotaan. 
 
 
 
