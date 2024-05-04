@@ -602,6 +602,36 @@ def private_area_comments():
 
 
 
+
+@app.route('/add_private_comment', methods=['GET', 'POST'])
+def add_private_comment():
+    form = TopicForm()
+    
+    if form.validate_on_submit():
+        area_id = request.args.get('area_id')
+        private_area_post_id = request.args.get('post_id')
+        
+        sql_query = text("""
+            INSERT INTO private_area_post_comments (title, content, user_id, date_posted, private_area_id, private_area_post_id) 
+            VALUES (:title, :content, :user_id, :date_posted, :private_area_id, :private_area_post_id)
+            
+        """)
+        db.session.execute(sql_query, {
+            'title': form.title.data,
+            'content': form.content.data,
+            'user_id': current_user.id,
+            'private_area_id': area_id,
+            'private_area_post_id': private_area_post_id,
+            'date_posted': datetime.utcnow()
+        })
+        db.session.commit()
+        flash('New private topic-post has been created!', 'success')
+        return redirect(url_for('private_area'))
+    return render_template('new_comment.html', title='Create a topic',
+                           form=form, legend='New Topic')
+
+
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
