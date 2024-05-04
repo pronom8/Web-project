@@ -145,17 +145,31 @@ def topic_posts():
 
 
 
+
 @app.route('/new_topic', methods=['GET', 'POST'])
 def new_topic():
     form = TopicForm()
     if current_user.username != 'admin' and current_user.username != 'admin123':
         return redirect(url_for('home'))
     if form.validate_on_submit():
-        topic = Topic(title=form.title.data, content=form.content.data, user_id=current_user.id)
-        db.session.add(topic)
+        title = form.title.data
+        content = form.content.data
+        user_id = current_user.id
+        date_posted = datetime.utcnow()
+        
+       
+        sql_query = text("""
+            INSERT INTO topic (title, content, user_id, date_posted)
+            VALUES (:title, :content, :user_id, :date_posted)
+        """)
+        
+       
+        db.session.execute(sql_query, {'title': title, 'content': content, 'user_id': user_id, 'date_posted': date_posted})
         db.session.commit()
+        
         flash('New topic has been created!', 'success')
         return redirect(url_for('topics'))
+    
     return render_template('create_topic.html', title='Create a topic',
                            form=form, legend='New Topic')
     
