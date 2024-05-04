@@ -337,6 +337,33 @@ def add_user_to_private_area():
     flash('User added to private area successfully!', 'success')
     return redirect(url_for('private_area'))
 
+
+
+
+
+@app.route('/new_private_area', methods=['GET', 'POST'])
+def new_private_area():
+    form = TopicForm()
+    if current_user.username != 'admin' and current_user.username != 'admin123':
+        return redirect(url_for('home'))
+    if form.validate_on_submit():
+        sql_query = text("""
+            INSERT INTO private_area (title, content, user_id, date_posted) 
+            VALUES (:title, :content, :user_id, :date_posted)
+        """)
+        db.session.execute(sql_query, {
+            'title': form.title.data,
+            'content': form.content.data,
+            'user_id': current_user.id,
+            'date_posted': datetime.utcnow()
+        })
+        db.session.commit()
+        flash('New private topic has been created!', 'success')
+        return redirect(url_for('private_area'))
+    return render_template('create_topic.html', title='Create a topic',
+                           form=form, legend='New Topic')
+
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
