@@ -107,12 +107,41 @@ def your_topic(topic_id):
 
 @app.route("/topic_posts")
 def topic_posts():
-    page= request.args.get('page', 1, type=int)
-
+    
     topic_id = int(request.args.get('topic_id'))
+   
+    
 
-    posts = TopicPosts.query.order_by(TopicPosts.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('topic_posts.html', posts=posts, topic_id=topic_id)
+    sql_query = text("""
+        SELECT tp.id, tp.title, tp.date_posted, tp.content, tp.user_id, u.username, u.image_file
+        FROM topic_posts tp
+        JOIN "user" u ON tp.user_id = u.id
+        WHERE tp.topic_id = :topic_id
+        ORDER BY tp.date_posted DESC
+       
+    """)
+
+    sql_query_comments = text("""
+    SELECT COUNT(*) as num_comments
+    FROM topic_post_comments tpc
+    WHERE tpc.topic_id = :topic_id AND tpc.topic_post_id = :post_id
+    """)
+
+   
+    topic = db.session.execute(sql_query, {'topic_id': topic_id}).fetchall()
+
+    total_comments_count = 0
+
+
+    for post in topic:
+        post_id = post.id
+        post_comments_result = db.session.execute(sql_query_comments, {'topic_id': topic_id, 'post_id': post_id}).fetchone()
+        num_comments = post_comments_result.num_comments if post_comments_result else 0
+        total_comments_count += num_comments
+        
+
+    
+    return render_template('topic_posts.html', topic=topic, total_comments_count=total_comments_count, topic_id=topic_id)
 
 
 
