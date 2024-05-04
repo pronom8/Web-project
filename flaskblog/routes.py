@@ -443,6 +443,32 @@ def private_area_posts():
 
 
 
+
+@app.route("/search_private_posts", methods=["POST"])
+@login_required
+def search_private_posts():
+    # Extract the search input from the form
+    search_input = request.form.get("post_name")
+
+    # Construct the SQL query to search for posts
+    sql_query = """
+        SELECT id, title, date_posted, content, private_area_id, user_id
+        FROM private_area_posts
+        WHERE title ILIKE :search_input
+    """
+
+
+    # Execute the query with the search input
+    matching_posts = db.session.execute(text(sql_query), {"search_input": search_input + "%"}).fetchall()
+
+    # Pass the matching posts to the template for rendering
+    return render_template("search_results.html", matching_posts=matching_posts)
+
+
+
+
+
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
