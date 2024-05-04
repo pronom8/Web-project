@@ -27,8 +27,8 @@
         
         <div class="media-body">
 
-            <h2 class="article-title"> {{ area_details.title, area_id }}</h2>
-            <p class="article-content">{{ area_details.content, area_details.id }}</p>
+            <h2 class="article-title"> {{ area_details.title }}</h2>
+            <p class="article-content">{{ area_details.content }}</p>
         
         </div>
     </article>
@@ -51,7 +51,7 @@
                     <small class="text-muted">{{ comment.date_posted }}</small>
                 </div>
                
-                <h2><a class="article-title" href="{{ url_for('private_post_comment', area_post_comment_id = comment.id) }}">{{ comment.title, comment.id }}</a></h2>
+                <h2><a class="article-title" href="{{ url_for('private_post_comment', area_post_comment_id = comment.id) }}">{{ comment.title }}</a></h2>
                 <p class="article-content">{{ comment.content }}</p>
               
             </div>
