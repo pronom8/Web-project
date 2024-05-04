@@ -632,6 +632,26 @@ def add_private_comment():
 
 
 
+
+@app.route("/private_post_comment")
+def private_post_comment():
+
+    area_post_comment_id = int(request.args.get('area_post_comment_id'))
+   
+
+    sql_query = text("""
+        SELECT id, title, date_posted, content, user_id
+        FROM private_area_post_comments
+        WHERE id = :area_post_comment_id
+    """)
+
+    comment_info = db.session.execute(sql_query, {'area_post_comment_id': area_post_comment_id}).fetchone()
+   
+    return render_template('private_post_comment.html', comment_info=comment_info)
+
+
+
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
