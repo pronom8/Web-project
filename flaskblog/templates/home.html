@@ -1,29 +1,86 @@
+
+
+
+
+
+
+
+
 {% extends "layout.html" %}
 {% block content %}
-    {% for post in posts.items %}
-        <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ url_for('static', filename = 'profile_pics/'+ post.author.image_file) }}">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-              <small class="text-muted">{{ post.date_posted }}</small>
-            </div>
-            <h2><a class="article-title" href=" {{ url_for('post', post_id=post.id) }} ">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
-          </div>
-        </article>
-    {% endfor %}
-    {% for page_num in posts.iter_pages(left_edge =1, right_edge=1, left_current=1, right_current=2 ) %}
-      {% if page_num %}
-        {% if posts.page == page_num %}
-          
-          <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
-        {% else %}
-          <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
-        {% endif %}
-      {% else %}
-        ...
-      {% endif %}
+    <h1>Topics</h1>
 
-    {% endfor %}
+   
+
+    
+    {% if current_user.username == 'admin' or current_user.username == 'admin123' %}
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('new_topic') }}">Create a new Topic-Area</a>
+    
+    {% endif %}
+    
+
+ 
+
+    
+
+   
+    <form action="{{ url_for('search_topic_posts') }}" method="POST" class="mt-1 mb-1">
+        <div class="form-group">
+            <input type="text" name="post_name" class="form-control" placeholder="Search for post" required>
+        </div>
+        <button type="submit" class="btn btn-secondary btn-sm">Search</button>
+    </form>
+
+     
+        {% if posts %}
+            <p>Total topics: {{ posts|length }}</p>
+            <p class="nav-item nav-link article-title">Total posts in this topic: {{ total_posts_count }}</p>
+            <p class="nav-item nav-link article-title">Total comments in this topic: {{ total_comments }}</p>
+        {% endif %}
+
+        {% if topic_counts %}
+            {% set total_comments = 0 %}
+            {% for topic_id, counts in topic_counts.items() %}
+                {% set total_comments = total_comments + counts.total_comments %}
+            {% endfor %}
+            <p>Total comments: {{ total_comments }}</p>
+        {% endif %}
+    
+
+
+        {% for post in posts %}
+        
+                <article class="media content-section">
+                <img class="rounded-circle article-img" src="{{ url_for('static', filename = 'profile_pics/'+ post.image_file) }}">
+                
+                    <div class="media-body">
+                        <div class="article-metadata">
+                          <a class="mr-2" href="{{ url_for('user_posts', username=post.username) }}">{{ post.username }}</a>
+                          <small class="text-muted">{{ post.date_posted }}</small>
+                        </div>
+                        
+
+                        {% if post.id is not none %}
+                        <h2><a class="article-title" href=" {{ url_for('topic_posts', topic_id = post.id) }} ">{{ post.title }}</a></h2>
+                        <p class="article-content">{{ post.content }}</p>
+                        <p>Total posts in this topic: {{ topic_post_counts[post.id] if post.id in topic_post_counts else 0 }}</p>
+                        <p>Total comments in this topic: {{ topic_comment_counts[post.id] if post.id in topic_comment_counts else 0 }}</p>
+                        {% endif %}
+                    </div>
+                </article>
+         
+        {% endfor %}
+    
+
+
+
+
+
+{% with posts=posts, topc_id=topic_id %}
+{% endwith %}
+
+  
+
+
+
 {% endblock content %}
