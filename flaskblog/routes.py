@@ -418,6 +418,31 @@ def delete_private_area(area_id):
 
 
 
+
+
+
+@app.route("/private_area_posts")
+def private_area_posts():
+    area_id = int(request.args.get('area_id'))
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    
+    # SQL query to fetch private areas ordered by date
+    sql_query = text("""
+        SELECT id, title, date_posted, content, user_id, private_area_id
+        FROM private_area_posts
+        ORDER BY date_posted DESC
+        
+    """)
+    
+    # Execute the SQL query with pagination
+    areas = db.session.execute(sql_query, {'per_page': per_page, 'offset': (page-1)*per_page}).fetchall()
+    print(areas)
+    return render_template('private_area_posts.html', areas=areas, area_id=area_id)
+
+
+
+
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
