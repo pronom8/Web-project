@@ -468,6 +468,30 @@ def search_private_posts():
 
 
 
+@app.route('/new_private_area_post', methods=['GET', 'POST'])
+def new_private_area_post():
+    form = TopicForm()
+    
+    if form.validate_on_submit():
+        area_id = request.args.get('area_id')
+        sql_query = text("""
+            INSERT INTO private_area_posts (title, content, user_id, date_posted, private_area_id ) 
+            VALUES (:title, :content, :user_id, :date_posted, :private_area_id)
+        """)
+        db.session.execute(sql_query, {
+            'title': form.title.data,
+            'content': form.content.data,
+            'user_id': current_user.id,
+            'private_area_id': area_id,
+            'date_posted': datetime.utcnow()
+        })
+        db.session.commit()
+        flash('New private topic-post has been created!', 'success')
+        return redirect(url_for('private_area'))
+    return render_template('create_topic.html', title='Create a topic',
+                           form=form, legend='New Topic')
+
+
 
 @app.route("/post/<int:post_id>/update_post", methods=['GET', 'POST'])
 @login_required
