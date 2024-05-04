@@ -204,6 +204,36 @@ def new_topic_post():
                            form=form, legend='New Topic Post', topic_id=topic_id)
 
 
+
+
+
+@app.route("/topic_post_comments/<int:post_id>")
+def topic_post_comments(post_id):
+    sql_query = text("""
+        SELECT tpc.id, tpc.topic_post_id, tpc.title, tpc.date_posted, tpc.content, tpc.user_id, u.username, u.image_file
+        FROM topic_post_comments tpc
+        JOIN "user" u ON tpc.user_id = u.id
+        WHERE tpc.topic_post_id = :post_id
+        ORDER BY tpc.date_posted DESC
+    """)
+
+    sql_quera = text("""
+        SELECT tp.id, tp.title, tp.date_posted, tp.content, tp.user_id, tp.topic_id, u.username, u.image_file
+        FROM topic_posts tp
+        JOIN "user" u ON tp.user_id = u.id
+        WHERE tp.id = :post_id
+        """)
+    
+    post = db.session.execute(sql_quera, {'post_id': post_id}).fetchone()
+
+
+    
+    comments = db.session.execute(sql_query, {'post_id': post_id}).fetchall()
+    
+    return render_template('topic_post_comments.html', comments=comments, post_id = post_id, post= post)
+
+
+
 @app.route("/your_topic_post/<int:post_id>")
 def your_topic_post(post_id):
     post = TopicPosts.query.get_or_404(post_id)
