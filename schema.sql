@@ -86,7 +86,7 @@ CREATE TABLE private_area_post_comments (
     title VARCHAR(100) NOT NULL,
     date_posted TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     content TEXT NOT NULL,
-    private_area_post_id INTEGER REFERENCES private_posts (id) ON DELETE CASCADE NOT NULL,
+    private_area_post_id INTEGER REFERENCES private_area_posts (id) ON DELETE CASCADE NOT NULL,
     private_area_id INTEGER REFERENCES private_area (id) NOT NULL,
     user_id INTEGER REFERENCES "user" (id) NOT NULL
 );
