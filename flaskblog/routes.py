@@ -485,6 +485,8 @@ def new_private_area():
 @app.route("/post/<int:area_id>/delete_private_area", methods=['POST'])
 @login_required
 def delete_private_area(area_id):
+    if current_user.username != 'admin' and current_user.username != 'admin123':
+        return redirect(url_for('home'))
     # Fetch all posts belonging to the private area
     posts_query = text("""
         SELECT id
