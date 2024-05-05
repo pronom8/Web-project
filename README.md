@@ -40,7 +40,10 @@ Clone this repository to your computer and go to its root folder
 Create .env file with the following content:
 
 - DATABASE_URL=<local-database-address>  
-- SECRET_KEY=<secret-key>  
+- SECRET_KEY=<secret-key>
+- for example:
+SECRET_KEY=9b1af21b123213d3b83288e3b4a3213b8c9af9
+DATABASE_URL=postgresql://postgres:kukka321@localhost/postgres
 
 Activate virtual environment and install requirements as follows:
 - $ python3 -m venv venv     
